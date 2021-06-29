@@ -77,9 +77,9 @@ public class UserController {
         return buildModel(Boolean.TRUE);
     }
 
-    private Map<String, Object> buildModel(@NonNull Boolean enabled) {
+    private Map<String, Object> buildModel(@NonNull Boolean errorsEnabled) {
         Map<String, Object> model = new LinkedHashMap<>();
-        model.put("errors", enabled);
+        model.put("errors", errorsEnabled);
         if (StringUtils.isNotEmpty(imprint)) {
             model.put("imprint-url", imprint);
         }

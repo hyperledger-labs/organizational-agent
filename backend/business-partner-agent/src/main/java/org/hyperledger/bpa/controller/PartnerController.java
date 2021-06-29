@@ -351,9 +351,6 @@ public class PartnerController {
     public HttpResponse<CreateInvitationResponse> requestConnectionInvitation(
             @Body CreatePartnerInvitationRequest req) {
         final Optional<CreateInvitationResponse> invitation = cm.createConnectionInvitation(req.alias);
-        if (invitation.isPresent()) {
-            return HttpResponse.ok(invitation.get());
-        }
-        return HttpResponse.serverError();
+        return HttpResponse.ok(invitation.orElseThrow());
     }
 }
