@@ -65,10 +65,13 @@ public interface PartnerRepository extends CrudRepository<Partner, UUID> {
     Number updateVerifiablePresentation(@Id UUID id,
             Map<String, Object> verifiablePresentation, @Nullable Boolean valid);
 
+    @Join(value = "tags", type = Join.Type.LEFT_FETCH)
     Optional<Partner> findByDid(String did);
 
+    @Join(value = "tags", type = Join.Type.LEFT_FETCH)
     Optional<Partner> findByConnectionId(String connectionId);
 
+    @Join(value = "tags", type = Join.Type.LEFT_FETCH)
     List<Partner> findByDidIn(List<String> did);
 
     @Query("SELECT distinct partner.* FROM partner,jsonb_to_recordset(partner.supported_credentials->'wrapped') as items(seqno text) where items.seqno = :seqNo")

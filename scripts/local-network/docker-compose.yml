@@ -33,6 +33,7 @@ services:
       BPA_IMPRINT_URL: ${BPA_IMPRINT_URL}
       BPA_PRIVACY_POLICY_URL: ${BPA_PRIVACY_POLICY_URL}
       BPA_CREDDEF_REVOCATION_REGISTRY_SIZE: ${BPA_CREDDEF_REVOCATION_REGISTRY_SIZE}
+      BPA_ENDORSER_ROLE: ${BPA1_ENDORSER_ROLE}
       NODE_ENV: development
     ports:
       - ${BPA1_PORT}:${BPA1_PORT}
@@ -50,7 +51,8 @@ services:
     entrypoint: /bin/bash
     command: [
         "-c",
-        "sleep 1;
+        "curl -d '{\"seed\":\"${ACAPY_SEED1}\", \"role\":\"ENDORSER\", \"alias\":\"BPA-1\"}' -X POST ${BPA_LEDGER_BROWSER}/register; \
+        sleep 5; \
         aca-py start \
         --auto-provision
         --arg-file acapy-static-args.yml \
@@ -66,6 +68,9 @@ services:
         --seed '${ACAPY_SEED1}' \
         --admin '0.0.0.0' ${ACAPY1_ADMIN_PORT} \
         --label '${AGENT1_NAME}' \
+        --trace \
+        --trace-tag 'bpa-agent-1' \
+        --trace-label 'bpa-agent-1' \
         ${ACAPY_ADMIN_CONFIG} \
         ${ACAPY_READ_ONLY_MODE} \
         "
@@ -116,6 +121,7 @@ services:
       BPA_IMPRINT_URL: ${BPA_IMPRINT_URL}
       BPA_PRIVACY_POLICY_URL: ${BPA_PRIVACY_POLICY_URL}
       BPA_CREDDEF_REVOCATION_REGISTRY_SIZE: ${BPA_CREDDEF_REVOCATION_REGISTRY_SIZE}
+      BPA_ENDORSER_ROLE: ${BPA2_ENDORSER_ROLE}
       NODE_ENV: development
     ports:
       - ${BPA2_PORT}:${BPA2_PORT}
@@ -134,7 +140,8 @@ services:
     entrypoint: /bin/bash
     command: [
         "-c",
-        "sleep 1;
+        "curl -d '{\"seed\":\"${ACAPY_SEED2}\", \"role\":\"ENDORSER\", \"alias\":\"BPA-1\"}' -X POST ${BPA_LEDGER_BROWSER}/register; \
+        sleep 5; \
         aca-py start \
         --auto-provision
         --arg-file acapy-static-args.yml \
@@ -150,6 +157,9 @@ services:
         --seed '${ACAPY_SEED2}' \
         --admin '0.0.0.0' ${ACAPY2_ADMIN_PORT} \
         --label '${AGENT2_NAME}' \
+        --trace \
+        --trace-tag 'bpa-agent-2' \
+        --trace-label 'bpa-agent-2' \
         ${ACAPY_ADMIN_CONFIG} \
         ${ACAPY_READ_ONLY_MODE} \
         "
